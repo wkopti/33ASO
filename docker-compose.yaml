@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+
+  backend:
+    image: backend 
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo 
+    deploy:
+      replicas: 3
+      # resources:
+      #   limits:
+      #     cpus: "0.1"
+      #     memory: 50M
+      #update_config:
+      #  parallelism: 1
+      #  delay: 10is
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+
+  mongo:
+    image: mongo 
+    ports:
+      - "27017:27017"
+    volumes:
+      - vol-database:/data
+    #environment:
+    #   MYSQL_ROOT_PASSWORD: senhaFiap
+    deploy:
+      replicas: 1
+     # resources:
+     #   limits:
+     #     cpus: "0.1"
+     #     memory: 50M
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  vol-database:
